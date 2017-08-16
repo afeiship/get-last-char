@@ -1,0 +1,3 @@
+- Getting started
+  - [Quick start](quickstart.md)
+  - [ alias ](/src/alias.md)
