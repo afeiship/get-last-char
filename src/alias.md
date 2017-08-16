@@ -1,4 +1,4 @@
-# alias
+# Alias
 > babel-plugin-module-alias
 
 ## install:
