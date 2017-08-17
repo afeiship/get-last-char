@@ -22,3 +22,7 @@ npm install --save babel babel-plugin-module-alias
   ]
 }
 ```
+
+
+## updates:
++ https://github.com/tleunen/babel-plugin-module-resolver
