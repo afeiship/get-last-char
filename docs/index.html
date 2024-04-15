@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>光标闪烁效果</title>
+    <script src="https://unpkg.com/@jswork/get-last-char@1.0.1/dist/index.umd.js"></script>
+    <style>
+      .text-container {
+        position: relative;
+        margin: 200px;
+        padding: 30px;
+        min-height: 300px;
+        border: 1px solid #000;
+        overflow: auto;
+      }
+      .text {
+        position: absolute;
+      }
+      .cursor {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        display: inline-block;
+        width: 4px;
+        height: 20px;
+        background-color: #000;
+        border-radius: 3px;
+        animation: cursorBlink 1s infinite;
+      }
+      /* 实现一个闪烁效果的动画 */
+      @keyframes cursorBlink {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="text-container">
+      <div class="text"></div>
+      <div class="cursor"></div>
+    </div>
+  </body>
+
+  <script>
+    const textContainer = document.querySelector('.text-container');
+    const textElement = document.querySelector('.text');
+    const cursor = document.querySelector('.cursor');
+
+    async function autoAppend() {
+      function delay(time) {
+        return new Promise((resolve) => setTimeout(resolve, time));
+      }
+
+      function transfer(text) {
+        const paragraphs = text
+          .split(' ')
+          .filter(Boolean)
+          .map((word) => `<p>${word}</p>`);
+        return paragraphs.join('');
+      }
+
+      const content = `
+        1.全球沟通：英文是国际通用语言，能够让你更容易与世界各地的人交流。无论是商务、旅行还是跨文化交流，具备良好的英文能力都能极大地扩展你的沟通范围。
+        2.职业机会：许多国际公司和组织使用英文作为工作语言。掌握英文可以为你在职场上提供更广泛的职业机会，使你在全球范围内更具竞争力。
+        3.学术研究：英文是许多学术领域的主要语言。如果你有意进行深入的学术研究或参与国际性的学术合作，良好的英文能力将是必不可少的。
+        4.文化理解：学习英文也是一种了解英语国家文化的途径。通过阅读英文文学、观看英语电影和了解英语国家的历史，你可以更好地理解这些文化，增强跨文化交流的能力。
+        5.个人发展：学习一门外语对大脑的发展有益。掌握英文可以提升你的思维能力、解决问题的能力以及跨学科的理解，对个人发展和学习其他技能也会产生积极的影响。
+
+        `;
+
+      for (let i = 0; i < content.length; i++) {
+        let text = content.slice(0, i);
+        let result = transfer(text);
+        textElement.innerHTML = result;
+        updateCursor();
+        await delay(100);
+      }
+    }
+
+    autoAppend();
+
+    function updateCursor() {
+      const { x, y } = window.getLastChar({
+        textElement,
+        textContainer,
+      });
+      cursor.style.transform = `translate(${x}px,${y}px)`;
+    }
+  </script>
+</html>
